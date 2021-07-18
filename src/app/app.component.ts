@@ -47,7 +47,7 @@ export class AppComponent {
               "Please click on Upload Images to save new images",
               "",
               {
-                duration: 10000,
+                duration: 2000,
                 horizontalPosition: "center",
                 verticalPosition: "bottom",
               }
