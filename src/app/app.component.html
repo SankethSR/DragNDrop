@@ -33,20 +33,22 @@
               <p class="m-0" style="font-size: small">Supported formats: jpeg, png, tiff</p>
             </ngx-dropzone-label>
           </div>
-          <div *ngIf="isValidImage">
+          <!-- <div *ngIf="isValidImage">
             <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
               <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
             </ngx-dropzone-preview>
-          </div>
+          </div> -->
         </div>
       </div>
     </ngx-dropzone>
+    <button *ngFor="let f of files" class="btn btn-outline-light bg-primary fonT" mat-stroked-button (click)="reUploadImage(f)">Reupload
+      Image</button>
   </div>
   <hr>
   <div mat-dialog-actions align="end">
     <div *ngIf="isValidImage">
       <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f">
-        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+        <ngx-dropzone-label>{{ temp }}</ngx-dropzone-label>
       </ngx-dropzone-image-preview>
     </div>
     <button class="btn btn-outline-light fonT text-primary" mat-stroked-button

@@ -8,7 +8,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'dragndrop';
   @ViewChild("generalDialog", { static: true })
   generalDialog!: TemplateRef<any>;
   dialogData: any = {
@@ -21,11 +20,17 @@ export class AppComponent {
   };
   files: File[] = [];
   isValidImage: boolean = false;
+  temp: string = "";
 
   constructor(
     public dialog: MatDialog,
     public _snackBar: MatSnackBar,
   ) {}
+
+  ngOnInit() {
+    this.files = [];
+    this.temp = "";
+  }
 
   openDialog() {
     const dialogRef = this.dialog.open(this.generalDialog, {
@@ -38,6 +43,17 @@ export class AppComponent {
       if (result != undefined) {
         if (result === "Save Changes") {
             // alert("save changes")
+            this._snackBar.open(
+              "Please click on Upload Images to save new images",
+              "",
+              {
+                duration: 10000,
+                horizontalPosition: "center",
+                verticalPosition: "bottom",
+              }
+            );
+    this.isValidImage = false;
+            this.ngOnInit();
         }else if(result === "Cancel") {
           // alert("Cancecl")
         }
@@ -62,17 +78,24 @@ export class AppComponent {
       );
     } else {
       this.isValidImage = true;
+      if(this.files[0].name.length > 14) {
+      this.temp = this.files[0].name.split(".")[0].substring(0, 8) + '...' + this.files[0].name.split(".")[0].substring(this.files[0].name.split(".")[0].length - 3) + "." + this.files[0].name.split(".")[1];;
+      } else {
+        this.temp = this.files[0].name;
+      }
+
     }
   }
 
   ValidFormat(files: any) {
-    var reg = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpg|.jpeg|.png|.gif)$/
-    var isValid = reg.test(files[0].value);
+    var imageReg = /[\/.](gif|jpg|jpeg|tiff|png)$/i;
+    var isValid = imageReg.test(files[0].name);
     return isValid;
   }
   
-  onRemove(event: File) {
+  reUploadImage(event: File) {
     console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
+    this.isValidImage = false;
   }
 }
