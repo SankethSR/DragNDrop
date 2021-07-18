@@ -1,1 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+@include mat-core();
+
+html, body { height: 100%; }
+body { margin: 0;}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: "Baloo Tamma 2", cursive !important;
+  /* font-family: "Amatic SC", cursive;
+  font-family: "Architects Daughter", cursive;
+  font-family: "Caveat", cursive;
+  font-family: "Courgette", cursive;
+  font-family: "Dancing Script", cursive;
+  font-family: "Dosis", sans-serif;
+  font-family: "Exo", sans-serif;
+  font-family: "Indie Flower", cursive;
+  font-family: "Lexend Tera", sans-serif;
+  font-family: "Nunito", sans-serif;
+  font-family: "Pacifico", cursive;
+  font-family: "Satisfy", cursive; */
+}
+
+// $my-app-primary: mat-palette($mat-blue-grey);
+// $my-app-accent:  mat-palette($mat-pink, 500, 900, A100);
+// $my-app-warn:    mat-palette($mat-deep-orange);
+// $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+// @include angular-material-theme($my-app-theme);
+
+$my-app-primary: mat-palette($mat-blue-grey);
+$my-app-accent:  mat-palette($mat-pink, 500, 900, A100);
+$my-app-warn:    mat-palette($mat-deep-orange);
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+@include angular-material-theme($my-app-theme);
+.alternate-theme {
+  $alternate-primary: mat-palette($mat-light-blue);
+  $alternate-accent:  mat-palette($mat-yellow, 400);
+  $alternate-theme: mat-light-theme($alternate-primary, $alternate-accent);
+  @include angular-material-theme($alternate-theme);
+}
