@@ -8,6 +8,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MaterialModule } from './material/material.module';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     BrowserAnimationsModule,
     MaterialModule,
     NgxDropzoneModule,
+    ImageCropperModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

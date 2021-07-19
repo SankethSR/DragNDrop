@@ -1,6 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,8 @@ export class AppComponent {
   files: File[] = [];
   isValidImage: boolean = false;
   temp: string = "";
+  imageChangedEvent: string = '';
+  croppedImage: any;
 
   constructor(
     public dialog: MatDialog,
@@ -30,6 +33,30 @@ export class AppComponent {
   ngOnInit() {
     this.files = [];
     this.temp = "";
+    this.imageChangedEvent='';
+    this.croppedImage='';  
+  }
+
+  
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+  }
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+  imageLoaded() {
+    // show cropper
+  }
+  cropperReady() {
+    // cropper ready
+  }
+  loadImageFailed() {
+    // show message
+    this._snackBar.open("Failed to load image! Please try again", "", {
+      duration: 2000,
+      horizontalPosition: "center",
+      verticalPosition: "bottom",
+    });
   }
 
   openDialog() {
@@ -62,8 +89,10 @@ export class AppComponent {
     });
   }
 
-  onSelect(event: { addedFiles: any; }) {
+  onSelect(event: any) {
     console.log(event);
+    this.imageChangedEvent = event.source;
+
     this.files.push(...event.addedFiles);
 
     if(!this.ValidFormat(this.files)) {

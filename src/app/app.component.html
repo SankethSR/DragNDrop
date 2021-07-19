@@ -1,12 +1,12 @@
 <button mat-raised-button (click)="openDialog()">Upload Image</button>
 
 <ng-template #generalDialog>
-  <p class="fonT" mat-dialog-title>Change Organization Image
-    <!-- <button mat-button class="close-icon"
-      [mat-dialog-close]="true">
+  <div class="fonT justify-content-between d-flex" mat-dialog-title>
+    <p>Change Organization Image</p>
+    <button mat-button class="close-icon positive-relative" style="bottom: 15px; left: 15px" [mat-dialog-close]="true">
       <mat-icon>close</mat-icon>
-    </button> -->
-  </p>
+    </button>
+  </div>
   <div mat-dialog-content>
     <!-- <div class="outerBorder h-100 p-5">
       <div class="container-fluid text-center align-middle h-100 p-5">
@@ -33,23 +33,26 @@
               <p class="m-0" style="font-size: small">Supported formats: jpeg, png, tiff</p>
             </ngx-dropzone-label>
           </div>
-          <!-- <div *ngIf="isValidImage">
-            <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
-              <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-            </ngx-dropzone-preview>
-          </div> -->
         </div>
       </div>
     </ngx-dropzone>
-    <button *ngFor="let f of files" class="btn btn-outline-light bg-primary fonT" mat-stroked-button (click)="reUploadImage(f)">Reupload
+    <button *ngFor="let f of files" class="btn btn-outline-light bg-primary fonT" mat-stroked-button
+      (click)="reUploadImage(f)">Reupload
       Image</button>
+
   </div>
+  <image-cropper *ngFor="let f of files" [imageChangedEvent]="f" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
+    [resizeToHeight]="165" [cropperMinWidth]="200" [cropperMinHeight]="200" format="png"
+    (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+    (loadImageFailed)="loadImageFailed()">
+  </image-cropper>
   <hr>
   <div mat-dialog-actions align="end">
     <div *ngIf="isValidImage">
       <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f">
         <ngx-dropzone-label>{{ temp }}</ngx-dropzone-label>
       </ngx-dropzone-image-preview>
+      <p class="text-left">File name: {{temp}}</p>
     </div>
     <button class="btn btn-outline-light fonT text-primary" mat-stroked-button
       [matDialogClose]="dialogData.no">Cancel</button>
