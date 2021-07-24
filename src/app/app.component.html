@@ -1,62 +1,98 @@
-<button mat-raised-button (click)="openDialog()">Upload Image</button>
-
-<ng-template #generalDialog>
-  <div class="fonT justify-content-between d-flex" mat-dialog-title>
-    <p>Change Organization Image</p>
-    <button mat-button class="close-icon positive-relative" style="bottom: 15px; left: 15px" [mat-dialog-close]="true">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
-  <div mat-dialog-content>
-    <!-- <div class="outerBorder h-100 p-5">
-      <div class="container-fluid text-center align-middle h-100 p-5">
-        <div class="row justify-content-center align-middle d-flex">
-          <img class="m-3" src="assets/icons/icon-192x192.png" alt="Girl in a jacket" width="25" height="25">
-          <div class="">
-            <p class="m-0" style="font-size: smlargeall"><a href="#" class="text-decoration-none">Upload file</a> or drag and drop image here</p>
-            <p class="m-0" style="font-size: small">Supported formats: jpeg, png, tiff</p>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <ngx-dropzone *ngIf="!isValidImage" (change)="onSelect($event)">
-      <div class="container-fluid text-center h-100">
-        <div class="d-flex justify-content-center h-100 align-items-center">
-          <img src="assets/images/upload.svg" style="height: 50px; width: 50px">
-          <div>
-            <ngx-dropzone-label>
-              <p class="m-0" style="font-size: large"><a href="#" class="text-decoration-none">Upload file</a> or
-                drag
-                and drop image here</p>
-            </ngx-dropzone-label>
-            <ngx-dropzone-label>
-              <p class="m-0" style="font-size: small">Supported formats: jpeg, png, tiff</p>
-            </ngx-dropzone-label>
-          </div>
-        </div>
-      </div>
-    </ngx-dropzone>
-    <button *ngFor="let f of files" class="btn btn-outline-light bg-primary fonT" mat-stroked-button
-      (click)="reUploadImage(f)">Reupload
-      Image</button>
-
-  </div>
-  <image-cropper *ngFor="let f of files" [imageChangedEvent]="f" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
-    [resizeToHeight]="165" [cropperMinWidth]="200" [cropperMinHeight]="200" format="png"
-    (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-    (loadImageFailed)="loadImageFailed()">
-  </image-cropper>
+<div class="container-fluid justify-content-center text-center">
+  <button mat-raised-button class="mt-5" (click)="openDialog()">Upload Image</button>
+  <br>
   <hr>
-  <div mat-dialog-actions align="end">
-    <div *ngIf="isValidImage">
-      <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f">
-        <ngx-dropzone-label>{{ temp }}</ngx-dropzone-label>
-      </ngx-dropzone-image-preview>
-      <p class="text-left">File name: {{temp}}</p>
+  <div *ngIf="isSaveChangesClicked" class="container">
+    <div class="col-12 d-inline">
+      <div class="col-3">
+        <img [src]="croppedImage" />
+      </div>
+      <div class="col-3 ellipse" id="textRuler">
+        {{temp}}
+      </div>
     </div>
-    <button class="btn btn-outline-light fonT text-primary" mat-stroked-button
-      [matDialogClose]="dialogData.no">Cancel</button>
-    <button class="btn btn-outline-light bg-primary fonT" mat-stroked-button [matDialogClose]="dialogData.yes">Save
-      changes</button>
   </div>
-</ng-template>
+  <ng-template #generalDialog>
+    <div class="fonT justify-content-between d-flex" mat-dialog-title>
+      <p>Change Organization Image
+        <button *ngIf="imageChangedEvent != ''" class="btn btn-outline-none text-secondary fonT" mat-stroked-button
+          (click)="imageChangedEvent = ''">Reupload
+          Image</button>
+      </p>
+      <button mat-button class="close-icon positive-relative" style="bottom: 15px; left: 15px"
+        [mat-dialog-close]="true">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div mat-dialog-content>
+      <div *ngIf="imageChangedEvent == ''" class="outerBorder h-100 bg-light">
+        <div class="container-fluid text-center align-middle h-100 p-5">
+          <div class="col-12 justify-content-center align-middle d-flex">
+            <img class="col-3 m-3" src="assets/images/upload.svg">
+            <div class="col-6" style="align-self: center;">
+              <p class="m-0" style="font-size: large"><a (click)="fileInput.click()" class="text-decoration-none">Upload
+                  file</a> or drag and drop image here
+                <input hidden (change)="fileChangeEvent($event)" #fileInput type="file" id="file">
+              </p>
+              <p class="m-0" style="font-size: small">Supported formats: jpeg, png, tiff</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <ngx-dropzone *ngIf="!isValidImage" accept="image/jpeg,image/jpg,image/png,image/gif" (change)="onSelect($event)">
+        <div class="container-fluid text-center h-100">
+          <div class="d-flex justify-content-center h-100 align-items-center">
+            <img src="assets/images/upload.svg" style="height: 50px; width: 50px">
+            <div>
+              <ngx-dropzone-label>
+                <p class="m-0" style="font-size: large"><a href="#" class="text-decoration-none">Upload file</a> or
+                  drag
+                  and drop image here</p>
+              </ngx-dropzone-label>
+              <ngx-dropzone-label>
+                <p class="m-0" style="font-size: small">Supported formats: jpeg, png, tiff</p>
+              </ngx-dropzone-label>
+            </div>
+          </div>
+        </div>
+      </ngx-dropzone> -->
+      <image-cropper *ngIf="imageChangedEvent != ''" [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true" [aspectRatio]="4 / 4" [resizeToHeight]="165" [cropperMinWidth]="200"
+        [cropperMinHeight]="200" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+        (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
+      </image-cropper>
+      <!-- <image-cropper [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true" [aspectRatio]="4 / 4" [resizeToHeight]="165" [cropperMinWidth]="200"
+        [cropperMinHeight]="200" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+        (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
+      </image-cropper> -->
+      <!-- <button *ngFor="let f of files" class="btn btn-outline-light bg-primary fonT" mat-stroked-button
+        (click)="reUploadImage(f)">Reupload
+        Image</button> -->
+
+    </div>
+
+    <hr>
+    <div mat-dialog-actions class="col-12">
+      <div *ngIf="imageChangedEvent != ''" class="col-6">
+        <img [src]="croppedImage" style="height: 165px;" />
+      </div>
+      <!-- <div *ngIf="isValidImage" class="col-6">
+        <img [src]="croppedImage" style="height: 165px;" />
+      </div> -->
+      <div [ngClass]="imageChangedEvent == '' ? 'col-12 text-right' : 'col-6 text-right'">
+        <button class="btn btn-outline-light fonT text-primary" mat-stroked-button
+          [matDialogClose]="dialogData.no">Cancel</button>
+        <button class="btn btn-outline-light bg-primary fonT" mat-stroked-button [matDialogClose]="dialogData.yes">Save
+          changes</button>
+      </div>
+      <!-- <div [ngClass]="isValidImage ? 'col-12 text-right' : 'col-6 text-right'">
+        <button class="btn btn-outline-light fonT text-primary" mat-stroked-button
+          [matDialogClose]="dialogData.no">Cancel</button>
+        <button class="btn btn-outline-light bg-primary fonT" mat-stroked-button [matDialogClose]="dialogData.yes">Save
+          changes</button>
+      </div> -->
+
+    </div>
+  </ng-template>
+</div>

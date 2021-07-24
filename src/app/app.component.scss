@@ -1,9 +1,15 @@
 .outerBorder {
-    border: 2px solid #838383;
-    border-style: dotted;
-    border-radius: 5px;
+  border: 2px solid #838383;
+  border-style: dotted;
+  border-radius: 5px;
 }
 
 .fonT {
-    font-family: "Baloo Tamma 2", cursive !important;
+  font-family: "Baloo Tamma 2", cursive !important;
+}
+
+.ellipse {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
